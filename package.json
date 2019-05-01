@@ -1,0 +1,44 @@
+{
+  "name": "jobstatus",
+  "homepage": "https://ryshackleton.github.io/jobstatus",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "d3": "^5.9.2",
+    "gh-pages": "^2.0.1",
+    "lodash-es": "^4.17.11",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "use-resize-observer": "^3.1.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build && cp -r build/ docs/",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@storybook/addon-actions": "^5.0.6",
+    "@storybook/addon-links": "^5.0.6",
+    "@storybook/addons": "^5.0.6",
+    "@storybook/react": "^5.0.6",
+    "babel-loader": "^8.0.5"
+  }
+}
