@@ -14,8 +14,8 @@
     "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "rm -rf docs/ && cp -r build/ docs/",
+    "predeploy": "npm run build && npm run build-storybook -c .storybook -o .out",
+    "deploy": "rm -rf docs/ && cp -r build/ docs/ && mv storybook-static docs/storybook",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
