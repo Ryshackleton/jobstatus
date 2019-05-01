@@ -4,6 +4,8 @@ A demo app to monitor the state of multiple "jobs" or other entities using a bar
 
 Uses React and canvas rendering to scale to thousands of nodes.
 
+[Live demo](https://ryshackleton.github.io/jobstatus/2000) (URL parameter governs the number of nodes to render)
+
 ### Available Scripts
 
 ### `npm start`
