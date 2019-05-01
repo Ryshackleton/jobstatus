@@ -1,10 +1,12 @@
 # Job Status Monitor
 
-A demo app to monitor the state of multiple "jobs" or other entities using a bar chart composed of dots or bubbles.
+A demo app to monitor the state of multiple "jobs" or other entities using a bar chart composed of circles.
 
 Uses React and canvas rendering to scale to thousands of nodes.
 
-[Live demo](https://ryshackleton.github.io/jobstatus/2000) (URL parameter governs the number of nodes to render)
+[Live demo](https://ryshackleton.github.io/jobstatus/2000) (the numeric URL parameter governs the number of nodes to render)
+
+[React storybook)[https://ryshackleton.github.io/jobstatus/storybook] showing the components in this demo
 
 ### Available Scripts
 
