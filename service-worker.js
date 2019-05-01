@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/jobstatus/precache-manifest.d80be86deb36adab8428b50be9d1c897.js"
+  "https://ryshackleton.github.io/jobstatus/precache-manifest.f4cc082df766f5a8936ec26e87ab3461.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/jobstatus/index.html", {
+workbox.routing.registerNavigationRoute("https://ryshackleton.github.io/jobstatus/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
