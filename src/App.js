@@ -24,7 +24,7 @@ const JobStatusDemoWithNNodes = ({ match }) => {
 export default function App() {
   return (
     <Router>
-      {["/:nNodes", ""].map((path, i) => (
+      {["/jobstatus/:nNodes", "/jobstatus/", "/:nNodes", ""].map((path, i) => (
         <Route
           key={i}
           path={path}
