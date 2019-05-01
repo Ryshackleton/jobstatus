@@ -3,7 +3,7 @@ import { has } from 'lodash-es';
 import React, { useEffect, useReducer } from 'react';
 import useInterval from '../../hooks/useInterval';
 import DotBarChart from '../../components/DotBarChart/DotBarChart';
-import { getDemoMetaDataAndNodes, getFakeProgress } from './demoDataGenerator';
+import { getFakeProgress } from './demoDataGenerator';
 
 const jobStateReducer = (state, action) => {
   switch(action.type) {
@@ -43,15 +43,15 @@ const jobStateReducer = (state, action) => {
 
 export default ({
   className,
-  groupPropName = 'id',
+  groupPropName = 'group_id',
   colorPropName = 'color',
   labelPropName = 'label',
   labelFont = 'bold 1.1em Arial',
   labelFontSecondary = '0.9em Arial',
   margin = { top: 60, right: 20, bottom: 10, left: 20 },
-  nNodes = 2000,
-  nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, { nNodes, groupPropName }),
+  nodesMetadataPromise,
   pollingInterval = 500,
+  uniqueIdPropName,
   wrapperStyle = { height: '100%', width: '100%' },
 }) => {
   const [state, dispatch] = useReducer(jobStateReducer, {
@@ -87,9 +87,9 @@ export default ({
 
   // poll the "server" for new data
   useInterval(() => {
-    // TODO: implement real function to poll for data
     dispatch({
       type: 'SET_NODES',
+      // TODO: implement real function to poll for data that doesn't require passing in the old nodes
       payload: getFakeProgress(state.nodes, state.groupKeys, groupPropName),
     });
     },

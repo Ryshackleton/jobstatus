@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { BaseSquare, SpinningSquare, ResponsiveSpinningSquare } from './Canvas';
 import JobStatus from '../containers/JobStatus/JobStatus';
+import { getDemoMetaDataAndNodes } from '../containers/JobStatus/demoDataGenerator';
 
 storiesOf('Canvas', module)
   .add('Canvas Fixed', () => (
@@ -29,10 +30,24 @@ storiesOf('Canvas', module)
 
 storiesOf('<JobStatus>', module)
   .add('...with random data',
-    () => (
-      <div>
+    () => {
+      const groupPropName = 'group_id';
+      /** nodesMetadataPromise should resolve to an object with properties:
+       * {
+       *  groupMetadataArray - array of objects with properties colorPropName, groupPropName, and labelPropName
+       *  nodes - array of objects with colorPropName, groupPropName and (optional) uniqueIdPropName
+       * }
+       */
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, { nNodes: 1000, groupPropName });
+      return <div>
         <h2>Job Monitoring Prototype: separate components</h2>
         <h4>Divided into JobStatus and DotBarChart components</h4>
-        <JobStatus/>
+        <JobStatus
+          colorPropName="color"
+          groupPropName={groupPropName}
+          labelPropName="label"
+          nodesMetadataPromise={nodesMetadataPromise}
+          wrapperStyle={{ height: '80%', width: '90%' }}
+        />
       </div>
-    ));
+    });

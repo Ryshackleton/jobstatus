@@ -1,6 +1,6 @@
 import { csvParse } from 'd3-dsv';
 
-const jobStatusCSV = `id,label,sort_order,color
+const jobStatusCSV = `group_id,label,sort_order,color
 D,DONE,7,#2ECC71
 E,RECOVERABLE,5,#F1948A
 F,FATAL,6,#E74C3C
@@ -9,7 +9,7 @@ I,INSTANTIATED,3,#5DADE2
 Q,QUEUED,2,#3498DB
 R,RUNNING,4,#ebd857`;
 
-export const getDemoMetaDataAndNodes = async ({ nNodes = 20000, groupPropName = 'id' }) => {
+export const getDemoMetaDataAndNodes = async ({ nNodes = 20000, groupPropName = 'group_id' }) => {
   const statusCSV = await csvParse(jobStatusCSV);
   const jobStatusMetaData = Array.isArray(statusCSV)
     ? statusCSV.sort((a, b) => (a.sort_order - b.sort_order))
@@ -18,7 +18,7 @@ export const getDemoMetaDataAndNodes = async ({ nNodes = 20000, groupPropName = 
   // start with all nodes at first status
   const nodes = (new Array(nNodes).fill({}))
     .map((node, i) => ({
-      uniqueId: i,
+      demoDataGeneratorId: `id_${i}`,
       [groupPropName]: jobStatusMetaData[0][groupPropName],
     }));
 
