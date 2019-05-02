@@ -9,8 +9,12 @@ I,INSTANTIATED,3,#5DADE2
 Q,QUEUED,2,#3498DB
 R,RUNNING,4,#ebd857`;
 
-export const getDemoMetaDataAndNodes = async ({ nNodes = 20000, groupPropName = 'group_id' }) => {
-  const statusCSV = await csvParse(jobStatusCSV);
+export const getDemoMetaDataAndNodes = async ({
+  metadataCsv = jobStatusCSV,
+  nNodes = 20000,
+  groupPropName = 'group_id'
+}) => {
+  const statusCSV = await csvParse(metadataCsv);
   const jobStatusMetaData = Array.isArray(statusCSV)
     ? statusCSV.sort((a, b) => (a.sort_order - b.sort_order))
     : [];

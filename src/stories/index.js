@@ -28,17 +28,149 @@ storiesOf('Canvas', module)
     </div>
   ));
 
+const metaDataWhiteOutlined = `group_id,label,sort_order,color
+G,REGISTERED,1,#fff
+Q,QUEUED,2,#fff
+I,INSTANTIATED,3,#fff
+R,RUNNING,4,#fff
+E,RECOVERABLE,5,#fff
+F,FATAL,6,#fff
+D,DONE,7,#fff`;
+
+const metaDataGrayscaleDoneInWhite = `group_id,label,sort_order,color
+G,REGISTERED,1,#bdbdbd
+Q,QUEUED,2,#969696
+I,INSTANTIATED,3,#737373
+R,RUNNING,4,#f7f7f7
+E,RECOVERABLE,5,#525252
+F,FATAL,6,#252525
+D,DONE,7,#fff`;
+
+const metaDataGrayscaleDoneInColor = `group_id,label,sort_order,color
+G,REGISTERED,1,#bdbdbd
+Q,QUEUED,2,#969696
+I,INSTANTIATED,3,#737373
+R,RUNNING,4,#F0C808
+E,RECOVERABLE,5,#525252
+F,FATAL,6,#252525
+D,DONE,7,#59A96A`;
+
+const metaDataGrayscaleHighlightRDE = `group_id,label,sort_order,color
+G,REGISTERED,1,#bdbdbd
+Q,QUEUED,2,#bdbdbd
+I,INSTANTIATED,3,#bdbdbd
+R,RUNNING,4,#F0C808
+E,RECOVERABLE,5,#F1948A
+F,FATAL,6,#E74C3C
+D,DONE,7,#59A96A`;
+
+const groupPropName = 'group_id';
 storiesOf('<JobStatus>', module)
-  .add('...with random data',
+  .add('...white circles',
     () => {
-      const groupPropName = 'group_id';
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
+        metadataCsv: metaDataWhiteOutlined,
+        nNodes: 1000,
+        groupPropName,
+      });
+      return <div>
+        <h2>Job Monitoring Prototype: separate components</h2>
+        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <JobStatus
+          circleStrokeColor={'#aaa'}
+          circleStrokeWidth={2.5}
+          colorPropName="color"
+          fontStrokeColor={'#737373'}
+          fontStrokeWidth={0.1}
+          groupPropName={groupPropName}
+          labelColorAccessor={() => ('#737373')}
+          labelPropName="label"
+          nodesMetadataPromise={nodesMetadataPromise}
+          wrapperStyle={{ height: '80%', width: '90%' }}
+        />
+      </div>
+    })
+  .add('...grayscale: done in white',
+    () => {
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
+        metadataCsv: metaDataGrayscaleDoneInWhite,
+        nNodes: 1000,
+        groupPropName,
+      });
+      return <div>
+        <h2>Job Monitoring Prototype: separate components</h2>
+        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <JobStatus
+          circleStrokeColor={'#aaa'}
+          circleStrokeWidth={1}
+          colorPropName="color"
+          fontStrokeColor={'#aaa'}
+          fontStrokeWidth={0.75}
+          groupPropName={groupPropName}
+          labelPropName="label"
+          nodesMetadataPromise={nodesMetadataPromise}
+          wrapperStyle={{ height: '80%', width: '90%' }}
+        />
+      </div>
+    })
+  .add('...grayscale: running and done in color',
+    () => {
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
+        metadataCsv: metaDataGrayscaleDoneInColor,
+        nNodes: 1000,
+        groupPropName,
+      });
+      return <div>
+        <h2>Job Monitoring Prototype: separate components</h2>
+        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <JobStatus
+          circleStrokeColor={'#aaa'}
+          circleStrokeWidth={0.25}
+          colorPropName="color"
+          fontStrokeColor={'#aaa'}
+          fontStrokeWidth={0.25}
+          groupPropName={groupPropName}
+          labelPropName="label"
+          nodesMetadataPromise={nodesMetadataPromise}
+          wrapperStyle={{ height: '80%', width: '90%' }}
+        />
+      </div>
+    })
+  .add('...grayscale: highlight running, done, error in color',
+    () => {
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
+        metadataCsv: metaDataGrayscaleHighlightRDE,
+        nNodes: 1000,
+        groupPropName,
+      });
+      return <div>
+        <h2>Job Monitoring Prototype: separate components</h2>
+        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <JobStatus
+          circleStrokeColor={'#aaa'}
+          circleStrokeWidth={0.25}
+          colorPropName="color"
+          fontStrokeColor={'#aaa'}
+          fontStrokeWidth={0.25}
+          groupPropName={groupPropName}
+          labelPropName="label"
+          nodesMetadataPromise={nodesMetadataPromise}
+          wrapperStyle={{ height: '80%', width: '90%' }}
+        />
+      </div>
+    })
+  .add('...fully colored',
+    () => {
       /** nodesMetadataPromise should resolve to an object with properties:
        * {
        *  groupMetadataArray - array of objects with properties colorPropName, groupPropName, and labelPropName
        *  nodes - array of objects with colorPropName, groupPropName and (optional) uniqueIdPropName
        * }
        */
-      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, { nNodes: 1000, groupPropName });
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
+        nNodes: 1000,
+        groupPropName,
+      });
       return <div>
         <h2>Job Monitoring Prototype: separate components</h2>
         <h4>Divided into JobStatus and DotBarChart components</h4>
@@ -50,4 +182,6 @@ storiesOf('<JobStatus>', module)
           wrapperStyle={{ height: '80%', width: '90%' }}
         />
       </div>
-    });
+    })
+
+
