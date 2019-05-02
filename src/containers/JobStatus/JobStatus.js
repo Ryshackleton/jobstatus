@@ -42,9 +42,14 @@ const jobStateReducer = (state, action) => {
 };
 
 export default ({
+  circleStrokeColor,
+  circleStrokeWidth,
   className,
-  groupPropName = 'group_id',
   colorPropName = 'color',
+  fontStrokeColor,
+  fontStrokeWidth,
+  groupPropName = 'group_id',
+  labelColorAccessor,
   labelPropName = 'label',
   labelFont = 'bold 1.1em Arial',
   labelFontSecondary = '0.9em Arial',
@@ -96,12 +101,17 @@ export default ({
     pollingInterval);
 
   return <DotBarChart
+    circleStrokeColor={circleStrokeColor}
+    circleStrokeWidth={circleStrokeWidth}
     className={className}
     colorAccessor={state.colorAccessor}
+    fontStrokeColor={fontStrokeColor}
+    fontStrokeWidth={fontStrokeWidth}
     groupPropName={groupPropName}
     groupCounts={state.groupKeys.length}
     groupKeys={state.groupKeys}
     groupLabels={state.groupLabels}
+    labelColorAccessor={labelColorAccessor}
     labelFont={labelFont}
     labelFontSecondary={labelFontSecondary}
     nodes={state.nodes}

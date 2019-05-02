@@ -3,8 +3,8 @@ export default ({
   colorAccessor,
   font = '30px Arial',
   fontSecondary = '20px Arial',
-  fontStrokeStyle = '#aaa',
-  fontOutlineWidth = 0.25,
+  fontStrokeColor = '#aaa',
+  fontStrokeWidth = 0.25,
   groupCounts,
   groupKeys,
   labels,
@@ -33,8 +33,8 @@ export default ({
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(labels[i], x, y);
-      ctx.lineWidth = fontOutlineWidth;
-      ctx.strokeStyle = fontStrokeStyle;
+      ctx.lineWidth = fontStrokeWidth;
+      ctx.strokeStyle = fontStrokeColor;
       ctx.strokeText(labels[i], x, y);
 
       if (counts.length === labels.length) {
