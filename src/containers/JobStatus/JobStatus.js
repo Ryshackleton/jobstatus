@@ -116,7 +116,7 @@ export default ({
     labelFontSecondary={labelFontSecondary}
     nodes={state.nodes}
     margin={margin}
-    uniqueIdPropName
+    uniqueIdPropName={uniqueIdPropName}
     wrapperStyle={wrapperStyle}
   />
 };
