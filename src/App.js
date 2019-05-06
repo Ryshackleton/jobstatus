@@ -28,7 +28,7 @@ const JobStatusDemoWithNNodes = ({ match }) => {
         labelPropName="label"
         margin={{ top: 60, right: 20, bottom: 20, left: 20 }}
         nodesMetadataPromise={nodesMetadataPromise}
-        pollingInterval={500}
+        pollingInterval={1500}
         uniqueIdPropName="demoDataGeneratorId"
         wrapperStyle={{ height: '80%', width: '80%' }}
       />
