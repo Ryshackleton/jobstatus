@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
+import { omit, map, reduce } from 'lodash-es';
 import useResizeObserver from "use-resize-observer";
 import ResponsiveCanvas from '../../components/Canvas/ResponsiveCanvas';
+import Tooltip from '../../components/Tooltip/Tooltip';
 import computeIndexedNodes from './utils/computeIndexedNodes';
 import computeLayout from './utils/computeLayout';
 import dotBarDrawFunction from './utils/drawDotBarFunction';
@@ -8,6 +10,8 @@ import labelDrawFunction from './utils/drawLabelsFunction';
 
 export const stateReducer = (state, action) => {
   switch(action.type) {
+    case 'SET_TOOLTIP_CONTENT':
+      return { ...state, ...action.payload };
     case 'SET_LAYOUT':
       return { ...state, ...action.payload };
     case 'START_RENDER':
@@ -19,11 +23,11 @@ export const stateReducer = (state, action) => {
   }
 };
 
-export default ({
+export default function DotBarChart({
   bandPaddingInner = 0.1,
   bandPaddingOuter = 0.1,
   className,
-  circleStrokeColor,
+  circleStrokeColor = '#aaa',
   circleStrokeWidth,
   colorAccessor,
   fontStrokeColor,
@@ -40,22 +44,31 @@ export default ({
   radiusToPaddingRatio = 0.8,
   uniqueIdPropName,
   wrapperStyle,
-}) => {
+}) {
+  // force pixel ratio to be 2 so we can map x/y back to color for tooltip
+  const canvasPixelRatio = 2;
+  const tooltipPadding = 3; // px
+
   const [sizeRef, width, height] = useResizeObserver();
 
   const [state, dispatch] = useReducer(stateReducer, {
+    isRendering: false,
     nodeCount: 0,
+    tooltipContent: '',
+    tooltipContentWidth: 0,
+    tooltipOffset: [0, 0],
+    radiusWithPadding: 1,
     radiusAccessor: () => (1),
     xAccessor: () => (0),
     xScale: () => (0),
     yAccessor: () => (0),
-    isRendering: false,
   });
 
   // rebuild the layout when the dimensions, chart direction, or number of group keys changes
   useEffect(() => {
     // compute the layout
     const {
+      radiusWithPadding,
       radiusAccessor,
       xAccessor,
       xScale,
@@ -79,6 +92,7 @@ export default ({
       type: 'SET_LAYOUT',
       payload: {
         nodeCount: nodes.length,
+        radiusWithPadding,
         radiusAccessor,
         xAccessor,
         xScale,
@@ -88,19 +102,87 @@ export default ({
   }, [width, height, groupKeys, isHangingBar, state.nodeCount]);
 
   // index the nodes by group, which lets the layout place each node in a particular order
-  const { nodes: indexed, groupCounts, groupIndexPropName } = computeIndexedNodes({
+  const {
+    colorToNode, // unique mapping of rgb() -> unique node
+    nodes: indexed,
+    groupCounts,
+    groupIndexPropName,
+    nodeIdToColor,
+  } = computeIndexedNodes({
     groupPropName,
     groupKeys,
     nodes,
     uniqueIdPropName,
   });
 
+  // build a draw function that renders every node as a unique color
+  const eventCanvasDrawFunction = dotBarDrawFunction({
+    nodes: indexed,
+    // access the color that maps to a node
+    colorAccessor: (node) => (nodeIdToColor[node[uniqueIdPropName]] || ''),
+    radiusAccessor: () => (state.radiusWithPadding),
+    strokeColorAccessor: (node) => (nodeIdToColor[node[uniqueIdPropName]] || ''),
+    strokeWidth: 0,
+    xAccessor: state.xAccessor,
+    yAccessor: state.yAccessor,
+  });
+
+  // detect mouse movements and update the tooltip content
+  const mousemove = (e) => {
+    const event = e;
+
+    const hiddenCtx = event.target.getContext('2d');
+    const rgb = hiddenCtx.getImageData(
+      event.nativeEvent.offsetX * canvasPixelRatio,
+      event.nativeEvent.offsetY * canvasPixelRatio,
+      1,
+      1).data;
+
+    // find the node associated with the unique color
+    const node = colorToNode[`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`];
+
+    if (node){
+      const renderProps = omit(node, [groupPropName, groupIndexPropName]);
+
+      // find the longest text width
+      const tooltipContentWidth = reduce(renderProps, (maxWidth, value, key) => {
+        // measure content width
+        hiddenCtx.font = labelFontSecondary;
+        const width = hiddenCtx.measureText(`${value}: ${key}`).width;
+        return width > maxWidth
+          ? width + (2 * tooltipPadding)
+          : maxWidth;
+      }, 0);
+
+      dispatch({
+        type: 'SET_TOOLTIP_CONTENT',
+        payload: {
+          tooltipContent: map(
+            renderProps,
+            (value, key) => (<p style={{ margin: '2px', textAlign: 'center' }} key={key}>{key}: {value}</p>)
+          ),
+          tooltipContentWidth,
+          tooltipOffset: [event.pageX, event.pageY],
+        }
+      });
+    } else {
+      dispatch({
+        type: 'SET_TOOLTIP_CONTENT',
+        payload: {
+          tooltipContent: '',
+          tooltipContentWidth: 0,
+          tooltipOffset: state.tooltipContent,
+        }
+      });
+    }
+  };
+
   // render by calling the stateful layout functions
   const dotBarDraw = dotBarDrawFunction({
     nodes: indexed,
     colorAccessor,
     radiusAccessor: state.radiusAccessor,
-    strokeColor: circleStrokeColor,
+    strokeColorAccessor: () => (circleStrokeColor),
     strokeWidth: circleStrokeWidth,
     xAccessor: state.xAccessor,
     yAccessor: state.yAccessor,
@@ -130,13 +212,31 @@ export default ({
     dispatch({ type: 'FINISH_RENDER' });
   };
 
-  return <ResponsiveCanvas
-    canvasDrawFunction={drawFunction}
-    canvasStyle={{ background: '#fff' }}
-    width={width}
-    height={height}
-    wrapperClassName={className}
-    wrapperSizeRef={sizeRef}
-    wrapperStyle={wrapperStyle}
-  />;
+  return <>
+    <ResponsiveCanvas
+      canvasPixelRatio={canvasPixelRatio}
+      canvasDrawFunction={drawFunction}
+      canvasStyle={{ background: 'transparent' }}
+      /* un-comment the next two lines to display the event canvas instead of the actual canvas */
+      /* canvasStyle={{ background: 'transparent', opacity: 0  }}
+      eventCanvasStyle = {{ position: 'absolute', top: 0, left: 0, opacity: 1 }} */
+      eventCanvasDrawFunction={eventCanvasDrawFunction}
+      height={height}
+      mousemove={mousemove}
+      width={width}
+      wrapperClassName={className}
+      wrapperSizeRef={sizeRef}
+      wrapperStyle={wrapperStyle}
+    />
+    <Tooltip
+      borderWidth={state.radiusWithPadding}
+      content={state.tooltipContent}
+      opacity={state.tooltipContent === '' ? 0 : 0.85}
+      contentWidth={state.tooltipContentWidth}
+      left={state.tooltipOffset[0]}
+      font={labelFontSecondary}
+      padding={tooltipPadding}
+      top={state.tooltipOffset[1]}
+    />
+    </>;
 };

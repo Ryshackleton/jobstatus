@@ -41,7 +41,7 @@ const jobStateReducer = (state, action) => {
   }
 };
 
-export default ({
+export default function JobStatus({
   circleStrokeColor,
   circleStrokeWidth,
   className,
@@ -58,7 +58,7 @@ export default ({
   pollingInterval = 500,
   uniqueIdPropName,
   wrapperStyle = { height: '100%', width: '100%' },
-}) => {
+}) {
   const [state, dispatch] = useReducer(jobStateReducer, {
     colorAccessor: () => ('#fff'),
     groupMetadata: {},
