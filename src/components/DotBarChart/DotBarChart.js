@@ -45,6 +45,7 @@ export default function DotBarChart({
 
   const [state, dispatch] = useReducer(stateReducer, {
     nodeCount: 0,
+    radiusWithPadding: 1,
     radiusAccessor: () => (1),
     xAccessor: () => (0),
     xScale: () => (0),
@@ -56,6 +57,7 @@ export default function DotBarChart({
   useEffect(() => {
     // compute the layout
     const {
+      radiusWithPadding,
       radiusAccessor,
       xAccessor,
       xScale,
@@ -79,6 +81,7 @@ export default function DotBarChart({
       type: 'SET_LAYOUT',
       payload: {
         nodeCount: nodes.length,
+        radiusWithPadding,
         radiusAccessor,
         xAccessor,
         xScale,

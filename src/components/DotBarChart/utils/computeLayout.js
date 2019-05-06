@@ -29,7 +29,7 @@ export default ({
     .paddingOuter([bandPaddingOuter]);
 
   // optimum radius and radius padding, given the amount of space we have
-  const radiusAndPadding = optRadius({
+  const radiusWithPadding = optRadius({
     bandwidth: xScale.bandwidth(),
     height,
     maxNodesPerBar: nodeCount,
@@ -37,15 +37,15 @@ export default ({
     width,
   });
   // divide radius and padding up according to user defined ratio
-  const radius = radiusAndPadding * radiusToPaddingRatio;
+  const radius = radiusWithPadding * radiusToPaddingRatio;
 
   // constants to compute the x and y positions from a node indexed by group
-  const diameter = radiusAndPadding * 2;
+  const diameter = radiusWithPadding * 2;
   const outerSpace = xScale.step() * xScale.paddingOuter();
   const nNodesPerRow = Math.ceil(xScale.bandwidth() / diameter);
 
   const xAccessor = (node) => {
-    const xOff = (Math.floor(node[groupIndexPropName] % nNodesPerRow) * diameter) + radiusAndPadding - outerSpace;
+    const xOff = (Math.floor(node[groupIndexPropName] % nNodesPerRow) * diameter) + radiusWithPadding - outerSpace;
     return xScale(node[groupPropName])+ xOff;
   };
 
@@ -62,6 +62,7 @@ export default ({
   const radiusAccessor = () => (radius);
 
   return {
+    radiusWithPadding,
     radiusAccessor,
     xAccessor,
     xScale,
