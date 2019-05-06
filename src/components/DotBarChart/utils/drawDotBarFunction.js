@@ -15,7 +15,7 @@ export default ({
   nodes,
   colorAccessor,
   radiusAccessor,
-  strokeColor = '#aaa',
+  strokeColorAccessor = () => ('#aaa'),
   strokeWidth = '2',
   strokeLineJoin = 'round',
   xAccessor,
@@ -26,7 +26,7 @@ export default ({
       const path2 = new Path2D(circlePath(xAccessor(d), yAccessor(d), radiusAccessor(d)));
 
       // Node outline
-      ctx.strokeStyle = strokeColor;
+      ctx.strokeStyle = strokeColorAccessor(d);
       ctx.lineWidth = strokeWidth;
       ctx.lineJoin = strokeLineJoin;
       ctx.stroke(path2);
