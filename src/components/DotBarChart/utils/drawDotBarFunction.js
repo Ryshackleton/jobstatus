@@ -22,12 +22,8 @@ export default ({
   yAccessor,
 }) => {
   return (ctx) => {
-    forEach(nodes, (d) => {
-      const r = radiusAccessor(d);
-      const x = xAccessor(d);
-      const y = yAccessor(d);
-
-      const path2 = new Path2D(circlePath(x, y, r));
+    forEach(nodes, (d, i) => {
+      const path2 = new Path2D(circlePath(xAccessor(d), yAccessor(d), radiusAccessor(d)));
 
       // Node outline
       ctx.strokeStyle = strokeColor;
