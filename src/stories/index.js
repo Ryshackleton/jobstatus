@@ -65,7 +65,7 @@ F,FATAL,6,#E74C3C
 D,DONE,7,#59A96A`;
 
 const groupPropName = 'group_id';
-storiesOf('<JobStatus>', module)
+storiesOf('JobStatus', module)
   .add('...white circles',
     () => {
       const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
