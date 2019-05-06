@@ -41,6 +41,9 @@ export default function DotBarChart({
   uniqueIdPropName,
   wrapperStyle,
 }) {
+  // force pixel ratio to be 2 so we can map x/y back to color for tooltip
+  const canvasPixelRatio = 2;
+
   const [sizeRef, width, height] = useResizeObserver();
 
   const [state, dispatch] = useReducer(stateReducer, {
@@ -91,13 +94,30 @@ export default function DotBarChart({
   }, [width, height, groupKeys, isHangingBar, state.nodeCount]);
 
   // index the nodes by group, which lets the layout place each node in a particular order
-  const { nodes: indexed, groupCounts, groupIndexPropName } = computeIndexedNodes({
+  const {
+    colorToNode, // unique mapping of rgb() -> unique node
+    nodes: indexed,
+    groupCounts,
+    groupIndexPropName,
+    nodeIdToColor,
+  } = computeIndexedNodes({
     groupPropName,
     groupKeys,
     nodes,
     uniqueIdPropName,
   });
 
+  // build a draw function that renders every node as a unique color
+  const eventCanvasDrawFunction = dotBarDrawFunction({
+    nodes: indexed,
+    // access the color that maps to a node
+    colorAccessor: (node) => (nodeIdToColor[node[uniqueIdPropName]] || ''),
+    radiusAccessor: () => (state.radiusWithPadding),
+    strokeColor: 'transparent',
+    strokeWidth: 0,
+    xAccessor: state.xAccessor,
+    yAccessor: state.yAccessor,
+  });
   // render by calling the stateful layout functions
   const dotBarDraw = dotBarDrawFunction({
     nodes: indexed,
@@ -133,13 +153,21 @@ export default function DotBarChart({
     dispatch({ type: 'FINISH_RENDER' });
   };
 
-  return <ResponsiveCanvas
-    canvasDrawFunction={drawFunction}
-    canvasStyle={{ background: '#fff' }}
-    width={width}
-    height={height}
-    wrapperClassName={className}
-    wrapperSizeRef={sizeRef}
-    wrapperStyle={wrapperStyle}
-  />;
+  return <>
+    <ResponsiveCanvas
+      canvasPixelRatio={canvasPixelRatio}
+      canvasDrawFunction={drawFunction}
+      canvasStyle={{ background: 'transparent' }}
+      /* un-comment the next two lines to display the event canvas instead of the actual canvas */
+      /* canvasStyle={{ background: 'transparent', opacity: 0  }}
+      eventCanvasStyle = {{ position: 'absolute', top: 0, left: 0, opacity: 1 }} */
+      eventCanvasDrawFunction={eventCanvasDrawFunction}
+      height={height}
+      mousemove={mousemove}
+      width={width}
+      wrapperClassName={className}
+      wrapperSizeRef={sizeRef}
+      wrapperStyle={wrapperStyle}
+    />
+    </>;
 };
