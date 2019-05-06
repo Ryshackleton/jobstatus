@@ -22,8 +22,9 @@ export const getDemoMetaDataAndNodes = async ({
   // start with all nodes at first status
   const nodes = (new Array(nNodes).fill({}))
     .map((node, i) => ({
-      demoDataGeneratorId: `id_${i}`,
+      unique_id: `id_${i + 1}`,
       [groupPropName]: jobStatusMetaData[0][groupPropName],
+      some_other_prop: 'with a very long name',
     }));
 
   return { nodes, groupMetadataArray: jobStatusMetaData };

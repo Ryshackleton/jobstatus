@@ -86,6 +86,7 @@ storiesOf('<JobStatus>', module)
           labelColorAccessor={() => ('#737373')}
           labelPropName="label"
           nodesMetadataPromise={nodesMetadataPromise}
+          uniqueIdPropName="unique_id"
           wrapperStyle={{ height: '80%', width: '90%' }}
         />
       </div>
@@ -109,6 +110,7 @@ storiesOf('<JobStatus>', module)
           groupPropName={groupPropName}
           labelPropName="label"
           nodesMetadataPromise={nodesMetadataPromise}
+          uniqueIdPropName="unique_id"
           wrapperStyle={{ height: '80%', width: '90%' }}
         />
       </div>
@@ -132,6 +134,7 @@ storiesOf('<JobStatus>', module)
           groupPropName={groupPropName}
           labelPropName="label"
           nodesMetadataPromise={nodesMetadataPromise}
+          uniqueIdPropName="unique_id"
           wrapperStyle={{ height: '80%', width: '90%' }}
         />
       </div>
@@ -155,6 +158,7 @@ storiesOf('<JobStatus>', module)
           groupPropName={groupPropName}
           labelPropName="label"
           nodesMetadataPromise={nodesMetadataPromise}
+          uniqueIdPropName="unique_id"
           wrapperStyle={{ height: '80%', width: '90%' }}
         />
       </div>
@@ -179,6 +183,7 @@ storiesOf('<JobStatus>', module)
           groupPropName={groupPropName}
           labelPropName="label"
           nodesMetadataPromise={nodesMetadataPromise}
+          uniqueIdPropName="unique_id"
           wrapperStyle={{ height: '80%', width: '90%' }}
         />
       </div>
