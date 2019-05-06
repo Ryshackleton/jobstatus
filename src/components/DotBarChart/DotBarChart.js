@@ -19,7 +19,7 @@ export const stateReducer = (state, action) => {
   }
 };
 
-export default ({
+export default function DotBarChart({
   bandPaddingInner = 0.1,
   bandPaddingOuter = 0.1,
   className,
@@ -40,7 +40,7 @@ export default ({
   radiusToPaddingRatio = 0.8,
   uniqueIdPropName,
   wrapperStyle,
-}) => {
+}) {
   const [sizeRef, width, height] = useResizeObserver();
 
   const [state, dispatch] = useReducer(stateReducer, {
