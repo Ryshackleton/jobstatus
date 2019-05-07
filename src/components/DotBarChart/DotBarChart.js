@@ -142,7 +142,7 @@ export default function DotBarChart({
     const node = colorToNode[`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`];
 
     if (node){
-      const renderProps = omit(node, [groupPropName, groupIndexPropName]);
+      const renderProps = omit(node, [groupIndexPropName]);
 
       // find the longest text width
       const tooltipContentWidth = reduce(renderProps, (maxWidth, value, key) => {

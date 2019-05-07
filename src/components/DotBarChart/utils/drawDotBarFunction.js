@@ -22,14 +22,16 @@ export default ({
   yAccessor,
 }) => {
   return (ctx) => {
-    forEach(nodes, (d, i) => {
+    forEach(nodes, (d) => {
       const path2 = new Path2D(circlePath(xAccessor(d), yAccessor(d), radiusAccessor(d)));
 
       // Node outline
-      ctx.strokeStyle = strokeColorAccessor(d);
-      ctx.lineWidth = strokeWidth;
-      ctx.lineJoin = strokeLineJoin;
-      ctx.stroke(path2);
+      if (strokeWidth > 0) {
+        ctx.strokeStyle = strokeColorAccessor(d);
+        ctx.lineWidth = strokeWidth;
+        ctx.lineJoin = strokeLineJoin;
+        ctx.stroke(path2);
+      }
 
       // Node fill
       ctx.fillStyle = colorAccessor(d);
