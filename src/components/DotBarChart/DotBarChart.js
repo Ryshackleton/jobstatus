@@ -30,6 +30,8 @@ export default function DotBarChart({
   circleStrokeColor = '#aaa',
   circleStrokeWidth,
   colorAccessor,
+  canvasStyle = { background: 'transparent' },
+  eventCanvasStyle,
   fontStrokeColor,
   fontStrokeWidth,
   groupPropName,
@@ -216,10 +218,8 @@ export default function DotBarChart({
     <ResponsiveCanvas
       canvasPixelRatio={canvasPixelRatio}
       canvasDrawFunction={drawFunction}
-      canvasStyle={{ background: 'transparent' }}
-      /* un-comment the next two lines to display the event canvas instead of the actual canvas */
-      /* canvasStyle={{ background: 'transparent', opacity: 0  }}
-      eventCanvasStyle = {{ position: 'absolute', top: 0, left: 0, opacity: 1 }} */
+      canvasStyle={canvasStyle}
+      eventCanvasStyle={eventCanvasStyle}
       eventCanvasDrawFunction={eventCanvasDrawFunction}
       height={height}
       mousemove={mousemove}

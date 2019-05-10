@@ -42,10 +42,12 @@ const jobStateReducer = (state, action) => {
 };
 
 export default function JobStatus({
+  canvasStyle,
   circleStrokeColor,
   circleStrokeWidth,
   className,
   colorPropName = 'color',
+  eventCanvasStyle,
   fontStrokeColor,
   fontStrokeWidth,
   groupPropName = 'group_id',
@@ -101,10 +103,12 @@ export default function JobStatus({
     pollingInterval);
 
   return <DotBarChart
+    canvasStyle={canvasStyle}
     circleStrokeColor={circleStrokeColor}
     circleStrokeWidth={circleStrokeWidth}
     className={className}
     colorAccessor={state.colorAccessor}
+    eventCanvasStyle={eventCanvasStyle}
     fontStrokeColor={fontStrokeColor}
     fontStrokeWidth={fontStrokeWidth}
     groupPropName={groupPropName}

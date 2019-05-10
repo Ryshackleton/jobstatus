@@ -66,6 +66,30 @@ D,DONE,7,#59A96A`;
 
 const groupPropName = 'group_id';
 storiesOf('JobStatus', module)
+  .add('...showing mouse event canvas',
+    () => {
+      const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
+        metadataCsv: metaDataWhiteOutlined,
+        nNodes: 1000,
+        groupPropName,
+      });
+      return <div>
+        <h2>Job monitoring prototype</h2>
+        <h4>Showing only the hidden mouse event canvas, which color each node, slightly differently to uniquely identify each node by pixel color.</h4>
+        <JobStatus
+          canvasStyle={{ background: 'transparent', opacity: 0  }}
+          colorPropName="color"
+          fontStrokeColor={'#737373'}
+          eventCanvasStyle = {{ position: 'absolute', top: 0, left: 0, opacity: 1 }}
+          fontStrokeWidth={0.1}
+          groupPropName={groupPropName}
+          labelPropName="label"
+          nodesMetadataPromise={nodesMetadataPromise}
+          uniqueIdPropName="unique_id"
+          wrapperStyle={{ height: '80%', width: '90%' }}
+        />
+      </div>
+    })
   .add('...white circles',
     () => {
       const nodesMetadataPromise = getDemoMetaDataAndNodes.bind(null, {
@@ -74,8 +98,8 @@ storiesOf('JobStatus', module)
         groupPropName,
       });
       return <div>
-        <h2>Job Monitoring Prototype: separate components</h2>
-        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <h2>Job Monitoring Prototype</h2>
+        <h4>No color.</h4>
         <JobStatus
           circleStrokeColor={'#aaa'}
           circleStrokeWidth={2.5}
@@ -99,8 +123,8 @@ storiesOf('JobStatus', module)
         groupPropName,
       });
       return <div>
-        <h2>Job Monitoring Prototype: separate components</h2>
-        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <h2>Job Monitoring Prototype</h2>
+        <h4>Grayscale.</h4>
         <JobStatus
           circleStrokeColor={'#aaa'}
           circleStrokeWidth={1}
@@ -123,8 +147,8 @@ storiesOf('JobStatus', module)
         groupPropName,
       });
       return <div>
-        <h2>Job Monitoring Prototype: separate components</h2>
-        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <h2>Job Monitoring Prototype</h2>
+        <h4>Grayscale + two colors.</h4>
         <JobStatus
           circleStrokeColor={'#aaa'}
           circleStrokeWidth={0.25}
@@ -147,8 +171,8 @@ storiesOf('JobStatus', module)
         groupPropName,
       });
       return <div>
-        <h2>Job Monitoring Prototype: separate components</h2>
-        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <h2>Job Monitoring Prototype</h2>
+        <h4>Grayscale + 4 colors</h4>
         <JobStatus
           circleStrokeColor={'#aaa'}
           circleStrokeWidth={0.25}
@@ -176,8 +200,8 @@ storiesOf('JobStatus', module)
         groupPropName,
       });
       return <div>
-        <h2>Job Monitoring Prototype: separate components</h2>
-        <h4>Divided into JobStatus and DotBarChart components</h4>
+        <h2>Job Monitoring Prototype</h2>
+        <h4>Fully colored</h4>
         <JobStatus
           colorPropName="color"
           groupPropName={groupPropName}
