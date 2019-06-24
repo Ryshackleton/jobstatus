@@ -14,10 +14,14 @@
     "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
-    "predeploy": "npm run build && npm run build-storybook -c .storybook -o .out",
+    "predeploy": "npm run build:dev && npm run build-storybook -c .storybook -o .out",
     "deploy": "rm -rf docs/ && cp -r build/ docs/ && mv storybook-static docs/storybook",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "sh -ac '. node_env/.env.${REACT_APP_ENV}; react-scripts start'",
+    "start:dev": "REACT_APP_ENV=dev npm run start",
+    "start:prod": "REACT_APP_ENV=prod npm run start",
+    "build": "sh -ac '. node_env/.env.${REACT_APP_ENV}; react-scripts build'",
+    "build:dev": "REACT_APP_ENV=dev npm run build",
+    "build:prod": "REACT_APP_ENV=prod npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",

@@ -1,35 +1,3 @@
-import { csvParse } from 'd3-dsv';
-
-const jobStatusCSV = `group_id,label,sort_order,color
-D,DONE,7,#2ECC71
-E,RECOVERABLE,5,#F1948A
-F,FATAL,6,#E74C3C
-G,REGISTERED,1,#D6EAF8
-I,INSTANTIATED,3,#5DADE2
-Q,QUEUED,2,#3498DB
-R,RUNNING,4,#ebd857`;
-
-export const getDemoMetaDataAndNodes = async ({
-  metadataCsv = jobStatusCSV,
-  nNodes = 20000,
-  groupPropName = 'group_id'
-}) => {
-  const statusCSV = await csvParse(metadataCsv);
-  const jobStatusMetaData = Array.isArray(statusCSV)
-    ? statusCSV.sort((a, b) => (a.sort_order - b.sort_order))
-    : [];
-
-  // start with all nodes at first status
-  const nodes = (new Array(nNodes).fill({}))
-    .map((node, i) => ({
-      unique_id: `id_${i + 1}`,
-      [groupPropName]: jobStatusMetaData[0][groupPropName],
-      some_other_prop: 'with a very long name',
-    }));
-
-  return { nodes, groupMetadataArray: jobStatusMetaData };
-};
-
 export const getFakeProgress = (nodes, groupKeys, groupPropName) => {
   const numberToAdvance = Math.floor(Math.random() * 50);
   const indicesToAdvance = (new Array(numberToAdvance))
