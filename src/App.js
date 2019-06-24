@@ -12,7 +12,8 @@ export default function App({
   return (
     <Router>
       <Switch>
-        {[`/demo/:nNodes`, "/demo"].map((path) => (
+        {/*/jobstatus/demo/ routes below are for public github hosting */}
+        {['/jobstatus/demo/:nNodes', '/jobstatus/demo', '/demo/:nNodes'].map((path) => (
           <Route
             key="demo"
             exact path={path}
@@ -24,7 +25,7 @@ export default function App({
             )}
           />
         ))}
-        {[`/${routeName}/:job_id`, ""].map((path, i) => (
+        {[`/${routeName}/:job_id`, ''].map((path, i) => (
           <Route
             key={i}
             exact path={path}
